@@ -1,15 +1,14 @@
 /* ==========================================================================
-   YOUTUBE IMMERSIVE MODE - JS INTERACTION EDITION
-   Description: Masthead visibility is controlled by the .user-active class
+   YOUTUBE IMMERSIVE MODE - FIXED (SPA SUPPORT)
    ========================================================================== */
 
 /* --- 1. MASTHEAD BEHAVIOR --- */
 
 /* BASE STATE: Hidden */
-/* Logic: Theater/FullBleed + Not Squeezed + JS says user is INACTIVE */
+/* Logic: Theater OR FullBleed + Not Squeezed + Not Hidden (Active) + JS says Inactive */
 html:has(
-        ytd-watch-flexy[theater]:not([squeezeback]),
-        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+        ytd-watch-flexy[theater]:not([squeezeback]):not([hidden]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback]):not([hidden])
     )
     body:not(.user-active)
     #masthead-container {
@@ -25,10 +24,10 @@ html:has(
 }
 
 /* ACTIVE STATE: Visible */
-/* Logic: Theater/FullBleed + Not Squeezed + JS says user is ACTIVE (.user-active) */
+/* Logic: Theater OR FullBleed + Not Squeezed + Not Hidden (Active) + JS says Active */
 html:has(
-        ytd-watch-flexy[theater]:not([squeezeback]),
-        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+        ytd-watch-flexy[theater]:not([squeezeback]):not([hidden]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback]):not([hidden])
     )
     body.user-active
     #masthead-container {
@@ -41,22 +40,34 @@ html:has(
     position: fixed !important;
     z-index: 2021 !important;
 }
-
-/* --- 2. LAYOUT FIXES (Always apply margin 0 in immersive) --- */
+/* SEARCH FOCUS STATE: Always Visible */
+/* Logic: If the user clicks the search bar (focus), keep it open */
+/* This overrides the timer, so it won't hide while you type */
 html:has(
-        ytd-watch-flexy[theater]:not([squeezeback]),
-        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+        ytd-watch-flexy[theater]:not([squeezeback]):not([hidden]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback]):not([hidden])
+    )
+    #masthead-container:focus-within {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 2022 !important;
+}
+
+/* --- 2. LAYOUT FIXES (MARGIN 0) --- */
+/* Only remove margin if the player is ACTUALLY visible */
+html:has(
+        ytd-watch-flexy[theater]:not([squeezeback]):not([hidden]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback]):not([hidden])
     )
     #page-manager.ytd-app {
     margin-top: 0 !important;
 }
 
-/* --- 3. PLAYER DIMENSIONS (MANTIDO) --- */
+/* --- 3. PLAYER DIMENSIONS --- */
 
-/* Theater Mode */
+/* Theater Mode (without chat/squeezeback) */
 ytd-watch-flexy[theater]:not([squeezeback])
-    #player-full-bleed-container.ytd-watch-flexy,
-ytd-watch-flexy[flexy-large-window_]:not([squeezeback])
     #player-full-bleed-container.ytd-watch-flexy,
 ytd-watch-flexy[live-chat-present-and-expanded]:not([squeezeback])
     #player-full-bleed-container.ytd-watch-flexy {

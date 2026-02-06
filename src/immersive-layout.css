@@ -1,5 +1,5 @@
 /* ==========================================================================
-   YOUTUBE IMMERSIVE MODE - FIXED (SPA SUPPORT)
+   YOUTUBE IMMERSIVE MODE - FULL WINDOW THEATER
    ========================================================================== */
 
 /* --- 1. MASTHEAD BEHAVIOR --- */
@@ -18,7 +18,7 @@ html:has(
     transition:
         transform 0.4s ease,
         opacity 0.4s,
-        visibility 0.4s;
+        visibility 0.4s; /* Smooth exit */
     position: fixed !important;
     z-index: 2021 !important;
 }
@@ -36,10 +36,11 @@ html:has(
     visibility: visible;
     transition:
         transform 0.2s cubic-bezier(0, 0, 0.2, 1),
-        opacity 0.2s;
+        opacity 0.2s; /* Fast entrance */
     position: fixed !important;
     z-index: 2021 !important;
 }
+
 /* SEARCH FOCUS STATE: Always Visible */
 /* Logic: If the user clicks the search bar (focus), keep it open */
 /* This overrides the timer, so it won't hide while you type */
@@ -86,4 +87,11 @@ ytd-watch-flexy[full-bleed-player]:not([squeezeback])
 ytd-watch-flexy[fullscreen]:not([squeezeback])
     #player-full-bleed-container.ytd-watch-flexy {
     max-height: 100vh !important;
+}
+
+/* --- 4. BRUTE FORCE RESIZE FIX (Optional) --- */
+/* Ensures video container takes full space if JS delay happens */
+ytd-watch-flexy[theater]:not([squeezeback]) .html5-video-player {
+    width: 100% !important;
+    height: 100vh !important;
 }

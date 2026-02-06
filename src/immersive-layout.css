@@ -1,0 +1,78 @@
+/* ==========================================================================
+   YOUTUBE IMMERSIVE MODE - JS INTERACTION EDITION
+   Description: Masthead visibility is controlled by the .user-active class
+   ========================================================================== */
+
+/* --- 1. MASTHEAD BEHAVIOR --- */
+
+/* BASE STATE: Hidden */
+/* Logic: Theater/FullBleed + Not Squeezed + JS says user is INACTIVE */
+html:has(
+        ytd-watch-flexy[theater]:not([squeezeback]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+    )
+    body:not(.user-active)
+    #masthead-container {
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        transform 0.4s ease,
+        opacity 0.4s,
+        visibility 0.4s;
+    position: fixed !important;
+    z-index: 2021 !important;
+}
+
+/* ACTIVE STATE: Visible */
+/* Logic: Theater/FullBleed + Not Squeezed + JS says user is ACTIVE (.user-active) */
+html:has(
+        ytd-watch-flexy[theater]:not([squeezeback]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+    )
+    body.user-active
+    #masthead-container {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition:
+        transform 0.2s cubic-bezier(0, 0, 0.2, 1),
+        opacity 0.2s;
+    position: fixed !important;
+    z-index: 2021 !important;
+}
+
+/* --- 2. LAYOUT FIXES (Always apply margin 0 in immersive) --- */
+html:has(
+        ytd-watch-flexy[theater]:not([squeezeback]),
+        ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+    )
+    #page-manager.ytd-app {
+    margin-top: 0 !important;
+}
+
+/* --- 3. PLAYER DIMENSIONS (MANTIDO) --- */
+
+/* Theater Mode */
+ytd-watch-flexy[theater]:not([squeezeback])
+    #player-full-bleed-container.ytd-watch-flexy,
+ytd-watch-flexy[flexy-large-window_]:not([squeezeback])
+    #player-full-bleed-container.ytd-watch-flexy,
+ytd-watch-flexy[live-chat-present-and-expanded]:not([squeezeback])
+    #player-full-bleed-container.ytd-watch-flexy {
+    height: 100vh !important;
+    max-height: 100vh !important;
+}
+
+/* Standard VOD (Fit Content) */
+ytd-watch-flexy[full-bleed-player]:not([squeezeback])
+    #full-bleed-container.ytd-watch-flexy {
+    block-size: fit-content !important;
+    max-height: fit-content !important;
+}
+
+/* Fullscreen Safety */
+ytd-watch-flexy[fullscreen]:not([squeezeback])
+    #player-full-bleed-container.ytd-watch-flexy {
+    max-height: 100vh !important;
+}

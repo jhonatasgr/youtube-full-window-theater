@@ -4,6 +4,7 @@
   "version": "1.0",
   "description": "Expands YouTube Theater Mode to fill the entire window (Twitch/Kick style).",
   "icons": {
+    "16": "assets/icons/icon-16.png",
     "48": "assets/icons/icon-48.png",
     "96": "assets/icons/icon-96.png",
     "128": "assets/icons/icon-128.png"
